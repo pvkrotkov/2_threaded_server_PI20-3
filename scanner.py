@@ -2,7 +2,7 @@ import socket
 import threading
 import pyprind
 N = 2 ** 16 - 1
-ip = 'localhost'
+ip = input('Введите ip: ')
 
 def scan_port(ip, port):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
