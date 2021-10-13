@@ -1,15 +1,20 @@
 import socket
-from threading import Thread
+import threading
+import pyprind
+N = 2 ** 16 - 1
+ip = 'localhost'
 
-N = 2**16 - 1
-
-for port in range(1,100):
-    sock = socket.socket()
+def scan_port(ip, port):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.settimeout(0.5)
     try:
-        print(port)
-        sock.connect(('127.0.0.1', port))
-        print("Порт", i, "открыт")
-    except:
-        continue
-    finally:
+        sock.connect((ip, port))
+        print('\n',"Порт", port, "открыт")
         sock.close()
+    except:
+        pass
+bar = pyprind.ProgBar(N)
+for i in range(N):
+    potoc = threading.Thread(target=scan_port, args=(ip, i))
+    potoc.start()
+    bar.update()
