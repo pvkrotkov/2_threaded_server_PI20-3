@@ -3,7 +3,7 @@ from time import sleep
 
 sock = socket.socket()
 sock.setblocking(1)
-sock.connect(('localhost', 7777))
+sock.connect(('127.0.0.1', 7777))
 msg = ""
 while msg !='exit':
     msg = input()
