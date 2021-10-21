@@ -5,7 +5,7 @@ from threading import Thread
 
 
 PORT_AMOUNT = 1000 # сколько портов нужно проверить
-THR_AMOUNT = PORT_AMOUNT # количество потоков
+THR_AMOUNT = 10 # количество потоков
 threads = []
 open_ports = []
 address = input('Введите адрес для проверки портов: ')
@@ -20,6 +20,7 @@ sys.stdout.write("\b" * (toolbar_width+1))
 def scan(address, ports):
     for port in ports:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(0.5)
         try:
             sock.connect((address, port))
             global open_ports
@@ -28,7 +29,6 @@ def scan(address, ports):
             continue
         finally:
             sock.close()
-
     sys.stdout.write("-")
     time.sleep(0.001)
     sys.stdout.flush()
