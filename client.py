@@ -1,16 +1,52 @@
-import socket
-from time import sleep
+import socket, threading
 
-sock = socket.socket()
-sock.setblocking(1)
-sock.connect(('10.38.165.12', 9090))
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-#msg = input()
-msg = "Hi!"
-sock.send(msg.encode())
+while True:
+    name = input ('Пожалуйста, введите личный ник (1<длина<10): ')
+    if 1<len(name)<10:
+        break
 
-data = sock.recv(1024)
+host = 'localhost'
+port = 9090
 
-sock.close()
+client.connect((host, port))
+print ('установлено подключение к серверу')
+print ('введите "exit", чтобы закрыть соединение с сервером')
 
-print(data.decode())
+def vvod():
+    while True:
+        #Введите информацию, которая будет отправлена на сервер
+        outdata = input('')
+        print()
+        if outdata=='exit' or outdata=='Exit':
+            break
+                 # Отправить на сервер
+        client.send(f'{name}: {outdata}'.encode('utf-8'))
+        print('%s:%s'% (name, outdata))
+ 
+ 
+def priem():
+    while True:
+        #Принимаем информацию с сервера
+        try:
+            indata = client.recv(1024)
+            print(indata.decode('utf-8')) #Закодировать полученную информацию
+        except:
+            print('--Отключение--')
+            break
+ 
+ 
+#Создание многопоточности
+t1 = threading.Thread(target=priem, name='input')#Установить получение информации, объект потока
+t2 = threading.Thread(target=vvod, name='out') #Создание выходной информации, объект потока
+ 
+#Начать многопоточность
+t1.start()
+t2.start()
+
+t2.join()
+ 
+#Закрыть соединение
+print ('Сервер отключен')
+client.close()
