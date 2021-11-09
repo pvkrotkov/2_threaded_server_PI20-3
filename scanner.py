@@ -26,7 +26,7 @@ opened_ports=[]
 for i in range(number_of_all_ports):
     p1 = threading.Thread(target=scanning, args=(ip, i))
     p1.start()
-    p1.join()
+    
    
     
 
