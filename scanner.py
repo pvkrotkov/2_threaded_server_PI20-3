@@ -1,5 +1,5 @@
 import pyprind, threading
-from socket import *
+import socket
 
 
 
@@ -9,7 +9,7 @@ ip = input('Введите IP: ')
 
 def scanning(ip, port):
     global opened_ports
-    sock = socket(AF_INET, SOCK_STREAM)
+    sock = socket.socket()
     sock.settimeout(0.25)
     try:
         sock.connect((ip, port))
@@ -26,6 +26,9 @@ opened_ports=[]
 for i in range(number_of_all_ports):
     p1 = threading.Thread(target=scanning, args=(ip, i))
     p1.start()
+    p1.join()
+   
+    
 
     progress_bar.update()
 
