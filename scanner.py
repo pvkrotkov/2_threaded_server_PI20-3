@@ -5,10 +5,11 @@ from socket import *
 
 number_of_all_ports = 2 ** 16 - 1
 ip = input('Введите IP: ')
-sock = socket(AF_INET, SOCK_STREAM)
+
 
 def scanning(ip, port):
     global opened_ports
+    sock = socket(AF_INET, SOCK_STREAM)
     sock.settimeout(0.25)
     try:
         sock.connect((ip, port))
