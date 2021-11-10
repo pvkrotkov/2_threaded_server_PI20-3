@@ -3,10 +3,10 @@ import concurrent.futures
 import tqdm
 
 def scan_port(host, port, progress_bar, ports):
-    sock = socket.socket()  #создаем сокет
+    sock = socket.socket()  #создание сокета
     sock.settimeout(0.3)
     try:
-        sock.connect((host, port)) #пытаемся приконнектить к порту
+        sock.connect((host, port)) 
         ports.append(port)
     except:
         pass
@@ -26,7 +26,7 @@ progress_bar = tqdm.tqdm(total=end_port-start_port+1)
 with concurrent.futures.ThreadPoolExecutor(thread) as executor: #Выражение with используется для создания исполнительного блока экземпляра ThreadPoolExecutor, который будет быстро очищать потоки после выполнения
     futures = []
     for port in range(start_port, end_port+1):
-        future = executor.submit(scan_port, host, port, progress_bar, open_ports) #возвращает объект future из futures
+        future = executor.submit(scan_port, host, port, progress_bar, open_ports) #происходит возращение объекта future из futures
         futures.append(future)
     for future in futures:
         future.result()
