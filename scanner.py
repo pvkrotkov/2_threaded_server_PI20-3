@@ -1,29 +1,24 @@
-# coding=utf-8
-import threading
 import socket
+import threading
+import pyprind
 
+N = 65536
 
-def portscan(port):
-    global r
-    d = port * 1024
-    f = d - 1024
-    for i in range(f, d):
-        sock = socket.socket()
-        sock.settimeout(0.5)
-        if i == r - 1:
-            print ("Сканирование завершено!")
-        try:
-            connection = sock.connect(('127.0.0.1', i))
-            print('Порт :', i, "открыт.")
-            connection.close()
-        except:
-            # print(i)
-            pass
+Progress = pyprind.ProgBar(N)
 
+ip = '192.168.0.1'
 
-s = 4  # Введите число s от 1 до 64 (это число умножается на 1024) для проверки портов. 1 = 1024, 64 = 65536
-r = s * 1024
-print ("Запущено сканирование " + str(r) + " портов")
-for element in range(s + 1):
-    t = threading.Thread(target=portscan, kwargs={'port': element})
-    t.start()
+def scan_port(ip,port):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.settimeout(0.5)
+    try:
+        connect = sock.connect((ip,port))
+        print(f'\nport {port} is open')
+        sock.close()
+    except:
+        pass
+    finally:
+        Progress.update()
+
+if __name__ == '__main__':
+    [threading.Thread(target=scan_port, args=(ip, i)).start() for i in range(N)]
