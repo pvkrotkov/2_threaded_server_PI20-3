@@ -1,18 +1,16 @@
-# coding=utf-8
 import socket
+from time import sleep
 
-ip = "127.0.0.1"
-port = 8080
 sock = socket.socket()
-sock.connect((ip, port))
-sock.sendall(bytes("Я новый клиент", 'UTF-8'))
+sock.setblocking(1)
+sock.connect(('10.38.165.12', 9090))
 
-while True:
-    data = sock.recv(1024)
-    print("От сервера :", data.decode())
-    out_data = input()
-    sock.sendall(bytes(out_data, 'UTF-8'))
-    if out_data == 'exit' or out_data=='':
-        print ('Всего хорошего')
-        break
+#msg = input()
+msg = "Hi!"
+sock.send(msg.encode())
+
+data = sock.recv(1024)
+
 sock.close()
+
+print(data.decode()
