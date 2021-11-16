@@ -1,16 +1,33 @@
 import socket
-from time import sleep
+import threading
+import os
 
-sock = socket.socket()
-sock.setblocking(1)
-sock.connect(('10.38.165.12', 9090))
+UDP_MAX_SIZE = 65535
 
-#msg = input()
-msg = "Hi!"
-sock.send(msg.encode())
+def listen(s: socket.socket):
+	while True:
+		msg = s.recv(UDP_MAX_SIZE)
+		print('\r\r' + msg.decode('ascii') + '\n' + f'you: ', end='')
 
-data = sock.recv(1024)
+def connect(host = '127.0.0.1', port = 3000):
+	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-sock.close()
+	s.connect((host, port))
 
-print(data.decode())
+	threading.Thread(target=listen, args=(s,), daemon=True).start()
+
+	s.send('__join'.encode('ascii'))
+
+	while True:
+		msg = input(f'you: ')
+		s.send(msg.encode('ascii'))
+
+
+if __name__ == '__main__':
+	os.system('clear')
+	print('Welcome to chat!')
+	connect()
+© 2021 GitHub, Inc.
+Terms
+Privacy
+Security
