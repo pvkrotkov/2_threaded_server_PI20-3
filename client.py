@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[3]:
-
-
 import socket
 import threading
 import os
@@ -33,28 +27,4 @@ if __name__ == '__main__':
 	os.system('clear')
 	print('Welcome to chat!')
 	connect()
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
 
