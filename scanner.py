@@ -1,8 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
 
 import socket
 from concurrent.futures import ThreadPoolExecutor
@@ -43,9 +38,6 @@ progress_bar.close()
 for port in open_ports:
     print(f'Port {port} is opened!')
     
-
-
-# In[ ]:
 
 
 
