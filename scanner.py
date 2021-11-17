@@ -1,5 +1,5 @@
 import socket
-from threading import Thread
+import threading 
 import pyprind
 
 ip = input("Введите IP-сервер ")
