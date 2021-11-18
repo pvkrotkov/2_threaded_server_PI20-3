@@ -1,15 +1,29 @@
+import pyprind
 import socket
-from threading import Thread
+import threading
 
-N = 2**16 - 1
 
-for port in range(1,100):
-    sock = socket.socket()
+def scan(ip, port):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.settimeout(0.5)
     try:
-        print(port)
-        sock.connect(('127.0.0.1', port))
-        print("Порт", i, "открыт")
-    except:
-        continue
-    finally:
+        sock.connect((ip, port))
+        ports.append(port)
         sock.close()
+    except:
+        pass
+
+
+ip = input('Enter your IP address: ')
+ports = []
+N = 2 ** 16 - 1
+bar = pyprind.ProgBar(N)
+for port in range(N):
+    if port in ports:
+        continue
+    thread = threading.Thread(target=scan, args=(ip, port))
+    thread.start()
+    bar.update()
+
+print('Opened ports:')
+print(*ports, sep='\n')
